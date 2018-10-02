@@ -1,0 +1,40 @@
+@model vuejscore.Models.FlowOneBlock
+@{ ViewData["Title"] = "Home Page"; }
+@functions{
+    string RenderSlots(vuejscore.Models.FlowOneBlock model)
+    {
+        //find all slots in the model and render them with something like:
+        return @"
+<template slot=""header""><bla-bla>HEADER</bla-bla></template>
+<template slot=""footer""><bla-bla>FOOTER</bla-bla></template>
+<template slot=""stepOne""><bla-bla>1</bla-bla></template>
+<template slot=""stepTwo""><bla-bla>2</bla-bla></template>
+";
+    }
+
+    string RenderAttributes(vuejscore.Models.FlowOneBlock model)
+    {
+        // generate attributes excluding addons
+        return $@"
+title=""{model.Title}""
+:stepOne=""{{name:'{model.StepOne.Name}'}}""
+:stepTwo=""{{name:'{model.StepTwo.Name}'}}""
+";
+    }
+
+    string GetTagName(vuejscore.Models.FlowOneBlock model)
+    {
+        return "flow-one";
+    }
+}
+<div id="app"></div>
+<script type="text/x-template" id="template">
+    <app>
+        <@GetTagName(Model) @Html.Raw(RenderAttributes(Model))>
+            @Html.Raw(RenderSlots(Model))
+        </@GetTagName(Model)>
+    </app>
+</script>
+@section scripts {
+    <script src="~/dist/main.js" asp-append-version="true"></script>
+}
